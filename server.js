@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
 
         res.json({
             success: true,
-            message: "User Saved Successfully ✅",
+            message: " ✅",
             user: newUser
         });
 
