@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Wallet - Account Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS STYLES - The Visual Design */
+        /* ─── ORIGINAL LOGIN STYLES (unchanged) ─── */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background-color: #9499a6; /* The gray background from your image */
+            background-color: #9499a6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-
         .login-container {
             background-color: #ffffff;
             width: 100%;
@@ -31,7 +29,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
         }
-
         .lang-selector {
             text-align: right;
             font-size: 14px;
@@ -39,18 +36,15 @@
             margin-bottom: 20px;
             cursor: pointer;
         }
-
         h2 {
             font-size: 32px;
             font-weight: 700;
             color: #1a1a1a;
             margin-bottom: 30px;
         }
-
         .input-group {
             margin-bottom: 20px;
         }
-
         .input-group label {
             display: block;
             margin-bottom: 8px;
@@ -58,7 +52,6 @@
             font-weight: 500;
             color: #333;
         }
-
         .input-box {
             display: flex;
             align-items: center;
@@ -67,11 +60,9 @@
             padding: 12px 15px;
             border: 1px solid transparent;
         }
-
         .input-box:focus-within {
             border: 1px solid #ffc107;
         }
-
         .country-select {
             display: flex;
             align-items: center;
@@ -82,13 +73,11 @@
             font-weight: bold;
             color: #333;
         }
-
         .country-select img {
             width: 24px;
             height: 16px;
             object-fit: cover;
         }
-
         input {
             width: 100%;
             border: none;
@@ -97,20 +86,17 @@
             font-size: 14px;
             color: #333;
         }
-
         .password-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
         }
-
         .forgot-link {
             color: #e6a500;
             text-decoration: none;
             font-size: 14px;
         }
-
         .eye-btn {
             background: none;
             border: none;
@@ -118,7 +104,6 @@
             color: #999;
             font-size: 18px;
         }
-
         .btn {
             width: 100%;
             padding: 14px;
@@ -130,66 +115,300 @@
             margin-bottom: 15px;
             transition: 0.3s;
         }
-
         .btn-login {
-            background-color: #ffc107; /* The exact Yellow */
+            background-color: #ffc107;
             color: #000;
             margin-top: 20px;
         }
-
-        .btn-login:hover {
-            background-color: #e6af00;
-        }
-
+        .btn-login:hover { background-color: #e6af00; }
         .btn-help {
             background-color: #edf1f4;
             color: #666;
         }
-
         .register-text {
             text-align: center;
             margin-top: 30px;
             font-size: 14px;
             color: #666;
         }
-
         .register-text a {
             color: #e6a500;
             text-decoration: none;
             font-weight: bold;
         }
-
-        /* Responsive for mobile */
         @media (max-width: 480px) {
             .login-container {
                 height: 100vh;
                 max-width: 100%;
             }
         }
+
+        /* ─── SPIN WHEEL MODAL (added on top) ─── */
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f5d878;
+            --gold-dark: #b8860b;
+            --gold-pale: #fff8dc;
+        }
+
+        #spinModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(8,6,15,0.88);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        #spinModal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            background: linear-gradient(160deg, #110e1e 0%, #0f0c1a 60%, #0c1a1f 100%);
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 28px;
+            padding: 28px 22px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.07), 0 24px 80px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
+
+        .modal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 55%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px; right: 18px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+        .sw-badge {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            margin-bottom: 10px;
+        }
+        .sw-badge .bdot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+            animation: bdpulse 2s ease-in-out infinite;
+        }
+        @keyframes bdpulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50% { opacity:0.5; transform:scale(0.8); }
+        }
+        .sw-badge span {
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 1.6px; text-transform: uppercase;
+            color: var(--gold-light);
+        }
+
+        .sw-heading {
+            font-family: 'Cinzel', serif;
+            font-size: 22px; font-weight: 900;
+            text-align: center; line-height: 1.2;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-pale) 65%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .sw-sub {
+            font-size: 11px; color: rgba(255,255,255,0.4);
+            text-align: center; letter-spacing: 0.4px;
+            margin-bottom: 16px;
+        }
+
+        .sw-pills {
+            display: flex; gap: 7px; flex-wrap: wrap;
+            justify-content: center; margin-bottom: 18px;
+        }
+        .sw-pill {
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.22);
+            border-radius: 20px; padding: 3px 11px;
+            font-size: 10px; font-weight: 600;
+            color: var(--gold-light); letter-spacing: 0.3px;
+        }
+
+        .sw-wheel-wrap {
+            position: relative; width: 260px; height: 260px;
+            margin-bottom: 18px; flex-shrink: 0;
+        }
+
+        .sw-pointer {
+            position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            z-index: 10;
+            filter: drop-shadow(0 2px 8px rgba(212,175,55,0.8));
+        }
+
+        #swCanvas {
+            display: block; border-radius: 50%;
+            box-shadow:
+                0 0 0 3px #0a0812,
+                0 0 0 5px var(--gold),
+                0 0 0 8px rgba(212,175,55,0.15),
+                0 0 50px rgba(212,175,55,0.18);
+        }
+
+        .sw-hub {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 42px; height: 42px; border-radius: 50%;
+            background: conic-gradient(from 0deg, #f5d878, #d4af37, #b8860b, #f5d878);
+            border: 3px solid #fff8dc;
+            box-shadow: 0 0 16px rgba(212,175,55,0.7);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; z-index: 10;
+        }
+
+        .sw-result {
+            width: 100%; min-height: 46px;
+            background: rgba(212,175,55,0.06);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 8px 18px; margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+        .sw-result.won {
+            border-color: rgba(212,175,55,0.6);
+            background: rgba(212,175,55,0.10);
+            animation: rglow 1s ease;
+        }
+        @keyframes rglow {
+            0% { box-shadow: none; }
+            50% { box-shadow: 0 0 28px rgba(212,175,55,0.3); }
+            100% { box-shadow: none; }
+        }
+
+        #swResultMsg {
+            font-size: 13px; font-weight: 500;
+            color: rgba(255,255,255,0.38);
+            text-align: center; letter-spacing: 0.3px;
+        }
+        #swResultMsg.won {
+            font-family: 'Cinzel', serif;
+            font-size: 15px; font-weight: 700;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sw-spin-btn {
+            width: 100%; max-width: 240px;
+            padding: 13px 0;
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 40%, var(--gold-light) 60%, var(--gold) 80%, var(--gold-dark) 100%);
+            background-size: 200% 100%;
+            border: none; border-radius: 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 13px; font-weight: 700;
+            color: #1a0f2e; letter-spacing: 1.4px;
+            text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 4px 22px rgba(212,175,55,0.4);
+            transition: transform 0.15s, box-shadow 0.2s;
+            margin-bottom: 14px;
+            position: relative; overflow: hidden;
+        }
+        .sw-spin-btn::after {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+            transform: skewX(-20deg);
+            animation: swshimmer 3s infinite;
+        }
+        @keyframes swshimmer {
+            0% { left: -100%; }
+            60%, 100% { left: 160%; }
+        }
+        .sw-spin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(212,175,55,0.5);
+        }
+        .sw-spin-btn:active:not(:disabled) { transform: scale(0.97); }
+        .sw-spin-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .sw-spins-info {
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+            padding: 8px 18px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 40px;
+            width: 100%; max-width: 240px;
+        }
+        .sw-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--gold); box-shadow: 0 0 6px var(--gold);
+            transition: all 0.4s;
+        }
+        .sw-dot.empty { background: rgba(255,255,255,0.12); box-shadow: none; }
+        .sw-sep { width: 1px; height: 12px; background: rgba(255,255,255,0.12); }
+        .sw-spins-label {
+            font-size: 11px; font-weight: 500;
+            color: rgba(255,255,255,0.4); letter-spacing: 0.4px;
+        }
+        .sw-spins-label strong { color: var(--gold-light); }
+
+        /* Confetti */
+        .sw-confetti {
+            position: fixed; pointer-events: none; z-index: 99999;
+            border-radius: 2px;
+            animation: swcfall linear forwards;
+        }
+        @keyframes swcfall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- ─── ORIGINAL LOGIN PAGE (unchanged) ─── -->
     <div class="login-container">
         <div class="lang-selector">🌐 English</div>
-
         <h2>Account Login</h2>
-
-        <!-- FORM STARTS HERE -->
         <form id="loginForm">
-            <!-- Phone Input -->
             <div class="input-group">
                 <label>Phone Number</label>
                 <div class="input-box">
                     <div class="country-select">
-                        <img src="https://flagcdn.com/in.svg" alt="India"> 
+                        <img src="https://flagcdn.com/in.svg" alt="India">
                         <span>+91</span>
                     </div>
                     <input type="text" id="phone" placeholder="Please enter your phone number." required>
                 </div>
             </div>
-
-            <!-- Password Input -->
             <div class="input-group">
                 <div class="password-row">
                     <label>Password</label>
@@ -200,79 +419,266 @@
                     <button type="button" class="eye-btn" onclick="togglePassword()">👁️</button>
                 </div>
             </div>
-
-            <!-- Action Buttons -->
             <button type="submit" class="btn btn-login">Log In</button>
             <button type="button" class="btn btn-help">Help Center</button>
         </form>
-
         <div class="register-text">
             No Account? <a href="#">Register Now»</a>
         </div>
     </div>
 
+    <!-- ─── SPIN WHEEL MODAL (appears after login) ─── -->
+    <div id="spinModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeSpinModal()">✕</button>
+
+            <div class="sw-badge">
+                <div class="bdot"></div>
+                <span>Premium Wallet User</span>
+            </div>
+
+            <h1 class="sw-heading">Claim Your<br>Reward</h1>
+            <p class="sw-sub">Exclusive daily spin for premium members</p>
+
+            <div class="sw-pills">
+                <div class="sw-pill">₹100 – ₹10,000</div>
+                <div class="sw-pill">✦ Instant Credit</div>
+                <div class="sw-pill">Daily Refresh</div>
+            </div>
+
+            <div class="sw-wheel-wrap">
+                <div class="sw-pointer">
+                    <svg width="24" height="28" viewBox="0 0 24 28">
+                        <defs>
+                            <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#f5d878"/>
+                                <stop offset="100%" stop-color="#b8860b"/>
+                            </linearGradient>
+                        </defs>
+                        <polygon points="12,26 1,2 23,2" fill="#d4af37"/>
+                        <polygon points="12,26 1,2 23,2" fill="url(#pg)" opacity="0.5"/>
+                    </svg>
+                </div>
+                <canvas id="swCanvas" width="260" height="260"></canvas>
+                <div class="sw-hub">🏆</div>
+            </div>
+
+            <div class="sw-result" id="swResultBox">
+                <span id="swResultMsg">Spin the wheel to reveal your reward</span>
+            </div>
+
+            <button class="sw-spin-btn" id="swSpinBtn">Spin Now</button>
+
+            <div class="sw-spins-info">
+                <div class="sw-dot" id="swDot"></div>
+                <div class="sw-sep"></div>
+                <span class="sw-spins-label" id="swSpinsLabel"><strong>1 / 1</strong> spin left</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── ORIGINAL LOGIN SCRIPTS (unchanged) ─── -->
     <script>
-        // 1. Function to show/hide password
         function togglePassword() {
             const passInput = document.getElementById('password');
             passInput.type = passInput.type === 'password' ? 'text' : 'password';
         }
-
     </script>
-<script>
 
-const form = document.getElementById("loginForm");
+    <script>
+        const form = document.getElementById("loginForm");
 
-form.addEventListener("submit", async (e) => {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById("phone").value;
+            const password = document.getElementById("password").value;
 
-    e.preventDefault();
+            try {
+                const res = await fetch("https://arwallet.onrender.com/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phone, password })
+                });
+                const data = await res.json();
+                console.log(data);
 
-    const phone = document.getElementById("phone").value;
-    const password = document.getElementById("password").value;
+                // ── ADDED: show spin wheel on successful login ──
+                if (res.ok || data.success || data.token || data.message?.toLowerCase().includes("success")) {
+                    openSpinModal();
+                } else {
+                    alert(data.message);
+                }
+                // ── END ADDED ──
 
-    try {
+            } catch (error) {
+                console.log("Frontend Error:", error);
+                alert("Server not reachable");
+            }
+        });
+    </script>
 
-        const res = await fetch("https://arwallet.onrender.com/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                phone,
-                password
-            })
+    <!-- ─── SPIN WHEEL LOGIC ─── -->
+    <script>
+    (function () {
+        const segments = [
+            { label: '₹100',    grad: ['#1a2a50','#0f1a38'] },
+            { label: '₹5,000',  grad: ['#3b0b2d','#220617'] },
+            { label: '₹200',    grad: ['#0e3028','#072018'] },
+            { label: '₹750',    grad: ['#2c1b50','#1a0e30'] },
+            { label: '₹300',    grad: ['#1a2a50','#0f1a38'] },
+            { label: '₹10,000', grad: ['#4a1800','#2c0e00'] },
+            { label: '₹150',    grad: ['#0e3028','#072018'] },
+            { label: '₹2,000',  grad: ['#2c1b50','#1a0e30'] },
+            { label: '₹500',    grad: ['#1a2a50','#0f1a38'] },
+            { label: '₹1,000',  grad: ['#3b0b2d','#220617'] },
+            { label: '₹250',    grad: ['#0e3028','#072018'] },
+            { label: '₹50',     grad: ['#2c1b50','#1a0e30'] },
+        ];
+
+        const N = segments.length;
+        const arc = (2 * Math.PI) / N;
+        const canvas = document.getElementById('swCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = 130, cy = 130, r = 126;
+
+        let currentAngle = 0;
+        let spinning = false;
+        let spinsLeft = 1;
+
+        function drawWheel(angle) {
+            ctx.clearRect(0, 0, 260, 260);
+            for (let i = 0; i < N; i++) {
+                const start = angle + i * arc - Math.PI / 2;
+                const end = start + arc;
+
+                const grad = ctx.createRadialGradient(cx, cy, 18, cx, cy, r);
+                grad.addColorStop(0, segments[i].grad[0]);
+                grad.addColorStop(1, segments[i].grad[1]);
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(212,175,55,0.55)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                const label = segments[i].label;
+                const isBig = label === '₹10,000' || label === '₹5,000';
+                ctx.font = `700 ${isBig ? 10 : 12}px Outfit, sans-serif`;
+                ctx.textAlign = 'right';
+                ctx.shadowColor = 'rgba(0,0,0,0.7)';
+                ctx.shadowBlur = 4;
+                const tg = ctx.createLinearGradient(r - 60, 0, r - 8, 0);
+                tg.addColorStop(0, '#d4af37');
+                tg.addColorStop(0.5, '#f5d878');
+                tg.addColorStop(1, '#d4af37');
+                ctx.fillStyle = tg;
+                ctx.fillText(label, r - 7, 5);
+                ctx.restore();
+            }
+
+            // Outer ring
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(212,175,55,0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function easeOut(t) { return 1 - Math.pow(1 - t, 4.5); }
+
+        document.getElementById('swSpinBtn').addEventListener('click', function () {
+            if (spinning || spinsLeft < 1) return;
+            spinning = true;
+            spinsLeft = 0;
+            this.disabled = true;
+            document.getElementById('swDot').classList.add('empty');
+            document.getElementById('swSpinsLabel').innerHTML = '<strong>0 / 1</strong> spin left';
+            document.getElementById('swResultMsg').textContent = '🎲 Spinning...';
+            document.getElementById('swResultMsg').className = '';
+            document.getElementById('swResultBox').className = 'sw-result';
+
+            const winIndex = Math.floor(Math.random() * N);
+            const extraSpins = 7 + Math.random() * 3;
+            const winAngle = (N - winIndex) * arc + arc * 0.5;
+            const totalAngle = extraSpins * 2 * Math.PI + winAngle;
+            const startAngle = currentAngle;
+            const duration = 4500 + Math.random() * 700;
+            const startTime = performance.now();
+
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                currentAngle = startAngle + totalAngle * easeOut(progress);
+                drawWheel(currentAngle);
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    spinning = false;
+                    showResult(winIndex);
+                }
+            }
+            requestAnimationFrame(animate);
         });
 
-        const data = await res.json();
+        function showResult(idx) {
+            const reward = segments[idx].label;
+            const msg = document.getElementById('swResultMsg');
+            msg.textContent = `🎉 You won ${reward} wallet reward!`;
+            msg.className = 'won';
+            document.getElementById('swResultBox').className = 'sw-result won';
+            launchConfetti();
+        }
 
-        console.log(data);
+        function launchConfetti() {
+            const colors = ['#d4af37','#f5d878','#fff8dc','#e8c5ff','#7fffd4','#ffb3de'];
+            for (let i = 0; i < 55; i++) {
+                const el = document.createElement('div');
+                el.className = 'sw-confetti';
+                el.style.left = (15 + Math.random() * 70) + 'vw';
+                el.style.top = '0';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.animationDuration = (1.8 + Math.random() * 2) + 's';
+                el.style.animationDelay = (Math.random() * 0.5) + 's';
+                el.style.width = (6 + Math.random() * 7) + 'px';
+                el.style.height = (6 + Math.random() * 7) + 'px';
+                el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 4500);
+            }
+        }
 
-        // ALWAYS SHOW BACKEND MESSAGE
-        alert(data.message);
+        // Init wheel on load
+        drawWheel(currentAngle);
 
-    } catch (error) {
+        // Expose open/close to global scope
+        window.openSpinModal = function () {
+            // Reset wheel state each time modal opens
+            spinning = false;
+            spinsLeft = 1;
+            currentAngle = 0;
+            document.getElementById('swSpinBtn').disabled = false;
+            document.getElementById('swDot').classList.remove('empty');
+            document.getElementById('swSpinsLabel').innerHTML = '<strong>1 / 1</strong> spin left';
+            document.getElementById('swResultMsg').textContent = 'Spin the wheel to reveal your reward';
+            document.getElementById('swResultMsg').className = '';
+            document.getElementById('swResultBox').className = 'sw-result';
+            drawWheel(0);
+            document.getElementById('spinModal').classList.add('active');
+        };
 
-        console.log("Frontend Error:", error);
+        window.closeSpinModal = function () {
+            document.getElementById('spinModal').classList.remove('active');
+        };
 
-        alert("Server not reachable");
-    }
-});
+    })();
+    </script>
 
-/* Password Toggle */
-
-function togglePassword() {
-
-    const passInput = document.getElementById("password");
-
-    passInput.type =
-        passInput.type === "password"
-        ? "text"
-        : "password";
-}
-
-</script>
-
-
- 
 </body>
 </html>
