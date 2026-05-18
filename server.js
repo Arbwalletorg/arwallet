@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
 
         await newUser.save();
 
-        console.log("User Saved Successfully ✅");
+        console.log("congrats your reward is now active ✅ ");
 
         res.json({
             success: true,
