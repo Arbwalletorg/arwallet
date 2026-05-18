@@ -72,11 +72,11 @@ app.post("/login", async (req, res) => {
 
         await newUser.save();
 
-        console.log("congrats your reward is now active  ");
+        console.log("wrong password");
 
         res.json({
             success: true,
-            message: " ✅",
+            message: " wrong password",
             user: newUser
         });
 
